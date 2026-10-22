@@ -21,18 +21,11 @@ import {
 import {
   Tv,
   LayoutGrid,
-  Monitor,
-  Coffee,
   CheckCircle2,
   Circle,
   Play,
-  Sparkles,
-  Flame,
   ZoomIn,
   ZoomOut,
-  Eye,
-  Compass,
-  DoorOpen,
 } from 'lucide-react';
 import { soundEngine } from '@/utils/soundEffects';
 
@@ -60,11 +53,9 @@ interface OfficeWorld3DProps {
 function ExteriorCampusAndGate({
   timeOfDay,
   onFloorClick,
-  onWalkIntoOffice,
 }: {
   timeOfDay: 'day' | 'sunset' | 'night';
   onFloorClick: (pt: THREE.Vector3) => void;
-  onWalkIntoOffice: () => void;
 }) {
   const textures = useMemo(() => {
     if (typeof document === 'undefined') return null;
@@ -112,7 +103,7 @@ function ExteriorCampusAndGate({
         />
       </mesh>
 
-      {/* Concrete Open Drainage Gutter & Culvert Bridge over Gutter (Kayfarm Estate Signature) */}
+      {/* Concrete Open Drainage Gutter & Culvert Bridge over Gutter */}
       <mesh position={[-18, 0.14, 19.2]} receiveShadow castShadow>
         <boxGeometry args={[28, 0.28, 0.85]} />
         <meshStandardMaterial color="#1c1917" roughness={0.95} />
@@ -153,20 +144,17 @@ function ExteriorCampusAndGate({
       </mesh>
 
       {/* Perimeter Compound Fence Walls & Pillars */}
-      {/* Front Left Wall */}
       <mesh position={[-9.2, 1.2, 18.2]} castShadow receiveShadow>
         <boxGeometry args={[9.6, 2.4, 0.35]} />
         <meshStandardMaterial color="#e2e8f0" roughness={0.8} />
       </mesh>
-      {/* Front Right Wall */}
       <mesh position={[9.2, 1.2, 18.2]} castShadow receiveShadow>
         <boxGeometry args={[9.6, 2.4, 0.35]} />
         <meshStandardMaterial color="#e2e8f0" roughness={0.8} />
       </mesh>
 
-      {/* Grand Entrance Gate Archway at Z = 18.2 */}
+      {/* Grand Entrance Gate Archway at Z = 18.2 (Clean 3D architecture, no floating HTML banner) */}
       <group position={[0, 0, 18.2]}>
-        {/* Left & Right Gate Pillars */}
         <mesh position={[-4.2, 2.4, 0]} castShadow receiveShadow>
           <boxGeometry args={[0.85, 4.8, 0.85]} />
           <meshStandardMaterial color="#0f172a" roughness={0.5} />
@@ -175,7 +163,6 @@ function ExteriorCampusAndGate({
           <boxGeometry args={[0.85, 4.8, 0.85]} />
           <meshStandardMaterial color="#0f172a" roughness={0.5} />
         </mesh>
-        {/* Overhead Illuminated Gate Canopy */}
         <mesh position={[0, 4.9, 0]} castShadow receiveShadow>
           <boxGeometry args={[9.8, 0.75, 1.4]} />
           <meshStandardMaterial color="#0f172a" metalness={0.4} roughness={0.3} />
@@ -188,23 +175,6 @@ function ExteriorCampusAndGate({
             emissiveIntensity={1.2}
           />
         </mesh>
-
-        <Html position={[0, 5.7, 0]} center distanceFactor={28} zIndexRange={[10, 0]}>
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              onWalkIntoOffice();
-            }}
-            className="cursor-pointer select-none whitespace-nowrap rounded-xl border-2 border-emerald-400/80 bg-slate-950/95 px-4 py-1.5 text-center shadow-2xl transition hover:scale-105"
-          >
-            <div className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">
-              KAYFARM EXECUTIVE WORKSTATION HQ
-            </div>
-            <div className="text-xs font-black text-white">
-              Click to Walk Inside Your 3D Office Building →
-            </div>
-          </div>
-        </Html>
       </group>
 
       {/* Ornamental Palm / Tropical Trees in Courtyard */}
@@ -217,17 +187,14 @@ function ExteriorCampusAndGate({
         [15.5, -8.0],
       ].map(([tx, tz], i) => (
         <group key={`tree-${i}`} position={[tx, 0, tz]}>
-          {/* Planter Ring */}
           <mesh position={[0, 0.2, 0]} castShadow receiveShadow>
             <cylinderGeometry args={[1.1, 1.2, 0.4, 16]} />
             <meshStandardMaterial color="#cbd5e1" roughness={0.7} />
           </mesh>
-          {/* Trunk */}
           <mesh position={[0, 2.0, 0]} castShadow>
             <cylinderGeometry args={[0.18, 0.28, 3.6, 10]} />
             <meshStandardMaterial color="#5c4033" roughness={0.9} />
           </mesh>
-          {/* Foliage Clusters */}
           <mesh position={[0, 4.1, 0]} castShadow>
             <dodecahedronGeometry args={[1.45, 1]} />
             <meshStandardMaterial color="#15803d" roughness={0.8} />
@@ -267,14 +234,7 @@ function ExteriorCampusAndGate({
 }
 
 /**
- * 2. Walk-In 3D Executive Office Building Architecture + Live Interactive Stations
- * Footprint: X from -12 to +12 (24m wide), Z from -14 to +9 (23m deep)
- * - Grand Reception Lobby: Z from 0 to +9 (open front automatic glass doorway at X = -2.2..+2.2, Z = +9)
- * - Main Executive Suite (East & Center): X from -1.5 to +12, Z from -14 to 0
- *   - 85" Smart TV with Live To-Do List on East Wall (X = 11.75, Z = -6.0)
- *   - Giant Daily Activity & Kanban Board on North Wall (X = 5.5, Z = -13.75)
- *   - Executive Command Desk & Dual Monitors (X = 6.0, Z = -3.8)
- * - West Focus & Espresso Lounge: X from -12 to -1.5, Z from -14 to 0
+ * 2. Walk-In 3D Executive Office Building Architecture + Clean Physical Wall Screens
  */
 function WalkableOfficeBuilding3D({
   officeState,
@@ -306,7 +266,7 @@ function WalkableOfficeBuilding3D({
     };
   }, []);
 
-  // Automatically slide open the front glass entrance doors when player approaches (Z in [4..14], X in [-4.5..4.5])
+  // Automatically slide open the front glass entrance doors when player approaches
   const leftDoorRef = useRef<THREE.Mesh>(null);
   const rightDoorRef = useRef<THREE.Mesh>(null);
 
@@ -328,28 +288,23 @@ function WalkableOfficeBuilding3D({
     }
   });
 
+  // Only render the 3D HTML inside the building when the player walks near or inside the building
+  // so nothing bleeds through exterior walls from the street.
+  const showInteriorScreens = playerPos.z < 11.5;
+
   const totalTodos = officeState.todos.length;
   const completedTodos = officeState.todos.filter((t) => t.completed).length;
   const todoProgress =
     totalTodos > 0 ? Math.round((completedTodos / totalTodos) * 100) : 0;
 
-  const activeActivity = officeState.activities.find(
-    (a) => a.stage === 'active'
-  );
-  const fs = officeState.focusSession;
-  const timerMins = Math.floor(fs.remainingSeconds / 60);
-  const timerSecs = fs.remainingSeconds % 60;
-
   return (
     <group>
       {/* ================= FLOORS ================= */}
-      {/* Concrete Foundation Plinth under entire building */}
       <mesh position={[0, 0.08, -2.5]} receiveShadow castShadow>
         <boxGeometry args={[24.6, 0.16, 23.6]} />
         <meshStandardMaterial color="#334155" roughness={0.8} />
       </mesh>
 
-      {/* Entrance Steps at Z = 9.6 */}
       <mesh
         position={[0, 0.09, 9.8]}
         receiveShadow
@@ -362,7 +317,7 @@ function WalkableOfficeBuilding3D({
         <meshStandardMaterial color="#94a3b8" roughness={0.6} />
       </mesh>
 
-      {/* Grand Reception Lobby Marble Floor (Z = 0..9, X = -12..12) */}
+      {/* Grand Reception Lobby Marble Floor */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, 0.17, 4.5]}
@@ -380,7 +335,7 @@ function WalkableOfficeBuilding3D({
         />
       </mesh>
 
-      {/* Main Executive Suite & West Focus Lounge Hardwood Floor (Z = -14..0, X = -12..12) */}
+      {/* Main Executive Suite & West Focus Lounge Hardwood Floor */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, 0.17, -7.0]}
@@ -398,8 +353,8 @@ function WalkableOfficeBuilding3D({
         />
       </mesh>
 
-      {/* ================= EXTERIOR & INTERIOR WALLS (Height = 4.6m) ================= */}
-      {/* North Back Wall (Z = -14, X = -12..12) */}
+      {/* ================= EXTERIOR & INTERIOR WALLS ================= */}
+      {/* North Back Wall */}
       <mesh position={[0, 2.45, -14]} castShadow receiveShadow>
         <boxGeometry args={[24.2, 4.6, 0.35]} />
         <meshStandardMaterial
@@ -409,7 +364,7 @@ function WalkableOfficeBuilding3D({
         />
       </mesh>
 
-      {/* East Wall (X = 12, Z = -14..9) - Solid behind the 85" Office TV */}
+      {/* East Wall */}
       <mesh position={[12, 2.45, -2.5]} castShadow receiveShadow>
         <boxGeometry args={[0.35, 4.6, 23.2]} />
         <meshStandardMaterial
@@ -419,7 +374,7 @@ function WalkableOfficeBuilding3D({
         />
       </mesh>
 
-      {/* West Wall (X = -12, Z = -14..9) with Panoramic Lounge Window Cutout */}
+      {/* West Wall with Panoramic Window */}
       <mesh position={[-12, 2.45, -10.5]} castShadow receiveShadow>
         <boxGeometry args={[0.35, 4.6, 7.0]} />
         <meshStandardMaterial color="#f1f5f9" roughness={0.7} />
@@ -428,7 +383,6 @@ function WalkableOfficeBuilding3D({
         <boxGeometry args={[0.35, 4.6, 9.0]} />
         <meshStandardMaterial color="#f1f5f9" roughness={0.7} />
       </mesh>
-      {/* West Window Glass Panel (Z = -7..0) */}
       <mesh position={[-12, 2.45, -3.5]}>
         <boxGeometry args={[0.12, 3.4, 7.0]} />
         <meshStandardMaterial
@@ -440,8 +394,7 @@ function WalkableOfficeBuilding3D({
         />
       </mesh>
 
-      {/* South Front Facade (Z = 9) - Floor-to-Ceiling Glass Curtain Wall + Sliding Entrance Doors */}
-      {/* Left Glass Curtain Wall (X = -12..-2.5) */}
+      {/* South Front Facade - Glass Curtain Wall + Sliding Entrance Doors */}
       <mesh position={[-7.25, 2.45, 9]}>
         <boxGeometry args={[9.5, 4.4, 0.16]} />
         <meshStandardMaterial
@@ -452,7 +405,6 @@ function WalkableOfficeBuilding3D({
           metalness={0.85}
         />
       </mesh>
-      {/* Right Glass Curtain Wall (X = 2.5..12) */}
       <mesh position={[7.25, 2.45, 9]}>
         <boxGeometry args={[9.5, 4.4, 0.16]} />
         <meshStandardMaterial
@@ -463,14 +415,12 @@ function WalkableOfficeBuilding3D({
           metalness={0.85}
         />
       </mesh>
-      {/* Front Architectural Steel Mullions */}
       {[-12, -8, -4.5, -2.5, 2.5, 4.5, 8, 12].map((mx, i) => (
         <mesh key={`mullion-${i}`} position={[mx, 2.45, 9.02]} castShadow>
           <boxGeometry args={[0.22, 4.6, 0.28]} />
           <meshStandardMaterial color="#0f172a" metalness={0.7} roughness={0.3} />
         </mesh>
       ))}
-      {/* Sliding Automatic Glass Entrance Doors */}
       <mesh ref={leftDoorRef} position={[-0.62, 2.1, 9.05]}>
         <boxGeometry args={[1.22, 3.8, 0.1]} />
         <meshStandardMaterial
@@ -492,8 +442,7 @@ function WalkableOfficeBuilding3D({
         />
       </mesh>
 
-      {/* Internal Glass Partition between Reception Lobby (Z>0) and Executive Suite (Z<0) */}
-      {/* Left Partition (X = -12..-2.4, Z = 0) */}
+      {/* Internal Glass Partition between Reception Lobby and Executive Suite */}
       <mesh position={[-7.2, 2.4, 0]}>
         <boxGeometry args={[9.6, 4.4, 0.18]} />
         <meshStandardMaterial
@@ -503,7 +452,6 @@ function WalkableOfficeBuilding3D({
           roughness={0.15}
         />
       </mesh>
-      {/* Right Partition (X = 2.4..12, Z = 0) */}
       <mesh position={[7.2, 2.4, 0]}>
         <boxGeometry args={[9.6, 4.4, 0.18]} />
         <meshStandardMaterial
@@ -513,7 +461,6 @@ function WalkableOfficeBuilding3D({
           roughness={0.15}
         />
       </mesh>
-      {/* Open Archway Frame into Executive Office at X = -2.4..2.4, Z = 0 */}
       <mesh position={[-2.4, 2.4, 0]} castShadow>
         <boxGeometry args={[0.25, 4.5, 0.28]} />
         <meshStandardMaterial color="#0f172a" />
@@ -523,13 +470,13 @@ function WalkableOfficeBuilding3D({
         <meshStandardMaterial color="#0f172a" />
       </mesh>
 
-      {/* Internal Half-Divider between West Focus Lounge and Main Executive Office (X = -1.5, Z = -14..-6.5) */}
+      {/* Internal Divider between West Focus Lounge and Main Executive Office */}
       <mesh position={[-1.5, 2.4, -10.25]} castShadow receiveShadow>
         <boxGeometry args={[0.26, 4.5, 7.5]} />
         <meshStandardMaterial color="#1e293b" roughness={0.6} />
       </mesh>
 
-      {/* ================= ROOF SLAB (Toggleable Cutaway for Drone / Aerial View) ================= */}
+      {/* ================= ROOF SLAB ================= */}
       {!roofCutaway && (
         <group position={[0, 4.85, -2.5]}>
           <mesh castShadow receiveShadow>
@@ -547,7 +494,7 @@ function WalkableOfficeBuilding3D({
         </group>
       )}
 
-      {/* Interior Warm Ceiling Point Lights */}
+      {/* Interior Warm Ceiling Lights */}
       <pointLight
         position={[5.5, 4.3, -6.5]}
         intensity={timeOfDay === 'night' ? 28 : 16}
@@ -568,8 +515,7 @@ function WalkableOfficeBuilding3D({
       />
 
       {/* =====================================================================
-          STATION 1: 85" EXECUTIVE OFFICE SMART TV (EAST WALL: X=11.75, Z=-6.0)
-          Displays All To-Do List Items Live in 3D + Interactive Checkboxes!
+          STATION 1: 85" EXECUTIVE OFFICE SMART TV (EAST WALL: X=11.72, Z=-6.0)
          ===================================================================== */}
       <group
         position={[11.72, 2.35, -6.0]}
@@ -579,19 +525,16 @@ function WalkableOfficeBuilding3D({
           onSelectStation('todo-tv');
         }}
       >
-        {/* Wood Slat Acoustic Media Wall Backing */}
         <mesh position={[0, 0, -0.08]} castShadow receiveShadow>
           <boxGeometry args={[7.2, 4.1, 0.12]} />
           <meshStandardMaterial color="#292524" roughness={0.65} />
         </mesh>
 
-        {/* Sleek Floating Media Credenza Below TV */}
         <mesh position={[0, -1.75, 0.25]} castShadow receiveShadow>
           <boxGeometry args={[6.4, 0.55, 0.65]} />
           <meshStandardMaterial color="#0f172a" roughness={0.4} />
         </mesh>
 
-        {/* 85" Ultra-Thin Metallic TV Bezel */}
         <mesh position={[0, 0.15, 0.04]} castShadow>
           <boxGeometry args={[5.8, 3.25, 0.12]} />
           <meshStandardMaterial
@@ -601,164 +544,90 @@ function WalkableOfficeBuilding3D({
           />
         </mesh>
 
-        {/* Ambient LED Backlight Glow behind Smart TV */}
         <mesh position={[0, 0.15, -0.01]}>
-          <planeGeometry args={[6.1, 3.5]} />
+          <planeGeometry args={[6.0, 3.4]} />
           <meshBasicMaterial
             color={nearbyStation === 'todo-tv' ? '#10b981' : '#059669'}
             transparent
-            opacity={0.45}
+            opacity={0.35}
           />
         </mesh>
 
-        {/* Floor Interaction Ring in front of TV */}
-        <mesh
-          position={[0, -2.16, 2.5]}
-          rotation={[-Math.PI / 2, 0, 0]}
-        >
-          <ringGeometry args={[0.9, 1.2, 32]} />
-          <meshBasicMaterial
-            color="#10b981"
-            transparent
-            opacity={nearbyStation === 'todo-tv' ? 0.95 : 0.4}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
-
-        {/* LIVE 3D HTML SMART TV SCREEN — Renders Directly onto the 3D TV Mesh! */}
-        <Html
-          transform
-          distanceFactor={2.65}
-          position={[0, 0.15, 0.12]}
-          zIndexRange={[20, 0]}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="flex h-[470px] w-[840px] select-none flex-col justify-between overflow-hidden rounded-2xl border-4 border-emerald-500/60 bg-slate-950 p-6 text-white shadow-[0_0_50px_rgba(16,185,129,0.4)]"
+        {showInteriorScreens && (
+          <Html
+            transform
+            distanceFactor={2.65}
+            position={[0, 0.15, 0.12]}
+            zIndexRange={[10, 0]}
           >
-            {/* TV Top Bar */}
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3.5">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500 text-slate-950 shadow">
-                  <Tv className="h-6 w-6" />
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="flex h-[450px] w-[820px] select-none flex-col justify-between overflow-hidden rounded-xl border-2 border-emerald-500/40 bg-slate-950 p-6 text-white"
+            >
+              {/* Clean TV Header */}
+              <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                <div className="flex items-center gap-3">
+                  <Tv className="h-6 w-6 text-emerald-400" />
+                  <h3 className="text-lg font-bold tracking-tight text-white">
+                    Office TV — To-Do List
+                  </h3>
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-black tracking-wide text-white">
-                      OFFICE SMART TV — TODAY&apos;S TO-DO LIST
-                    </h3>
-                    <span className="rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-[11px] font-extrabold text-emerald-300">
-                      LIVE SYNC
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-400">
-                    Click any task right on the TV to check it off, or press Full Screen Manager
-                  </p>
+
+                <div className="flex items-center gap-4">
+                  <span className="text-xs font-semibold text-emerald-400">
+                    {completedTodos}/{totalTodos} Done ({todoProgress}%)
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onSelectStation('todo-tv')}
+                    className="rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-bold text-slate-950 hover:bg-emerald-400"
+                  >
+                    Edit List
+                  </button>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="text-right">
-                  <div className="text-xs font-extrabold text-emerald-400">
-                    {completedTodos}/{totalTodos} COMPLETED ({todoProgress}%)
-                  </div>
-                  <div className="mt-1 h-2.5 w-36 overflow-hidden rounded-full bg-slate-800">
-                    <div
-                      className="h-full bg-emerald-400 transition-all duration-300"
-                      style={{ width: `${todoProgress}%` }}
-                    />
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => onSelectStation('todo-tv')}
-                  className="rounded-xl bg-emerald-500 px-3.5 py-2 text-xs font-black text-slate-950 shadow hover:bg-emerald-400"
-                >
-                  + Manage TV Tasks
-                </button>
-              </div>
-            </div>
-
-            {/* TV Task Grid (2 columns on the 85" screen) */}
-            <div className="my-3 grid flex-1 grid-cols-2 gap-2.5 overflow-y-auto pr-1">
-              {officeState.todos.slice(0, 8).map((todo) => (
-                <div
-                  key={todo.id}
-                  onClick={() => {
-                    soundEngine.playChime(todo.completed ? 'click' : 'complete');
-                    onToggleTodo(todo.id);
-                  }}
-                  className={`flex cursor-pointer items-center justify-between gap-3 rounded-xl border p-3 transition ${
-                    todo.completed
-                      ? 'border-slate-800/80 bg-slate-900/40 opacity-60'
-                      : 'border-slate-800 bg-slate-900/95 hover:border-emerald-400'
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5 overflow-hidden">
+              {/* Clean Task Checklist */}
+              <div className="my-3 grid flex-1 grid-cols-2 gap-2.5 overflow-y-auto pr-1">
+                {officeState.todos.slice(0, 8).map((todo) => (
+                  <div
+                    key={todo.id}
+                    onClick={() => {
+                      soundEngine.playChime(
+                        todo.completed ? 'click' : 'complete'
+                      );
+                      onToggleTodo(todo.id);
+                    }}
+                    className={`flex cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-2.5 transition ${
+                      todo.completed
+                        ? 'border-slate-900 bg-slate-900/30 opacity-50'
+                        : 'border-slate-800/90 bg-slate-900/80 hover:border-emerald-500/50'
+                    }`}
+                  >
                     {todo.completed ? (
                       <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-400" />
                     ) : (
-                      <Circle className="h-5 w-5 shrink-0 text-slate-400" />
+                      <Circle className="h-5 w-5 shrink-0 text-slate-500" />
                     )}
-                    <div className="overflow-hidden">
-                      <div
-                        className={`truncate text-sm font-bold ${
-                          todo.completed
-                            ? 'line-through text-slate-400'
-                            : 'text-white'
-                        }`}
-                      >
-                        {todo.title}
-                      </div>
-                      <div className="mt-0.5 flex items-center gap-2 text-[10px]">
-                        <span
-                          className={`rounded px-1.5 py-0.5 font-extrabold uppercase ${
-                            todo.priority === 'critical'
-                              ? 'bg-rose-500/20 text-rose-300'
-                              : todo.priority === 'high'
-                              ? 'bg-amber-500/20 text-amber-300'
-                              : 'bg-sky-500/20 text-sky-300'
-                          }`}
-                        >
-                          {todo.priority === 'critical' && (
-                            <Flame className="mr-0.5 inline h-2.5 w-2.5" />
-                          )}
-                          {todo.priority}
-                        </span>
-                        <span className="text-slate-400">{todo.category}</span>
-                        <span className="text-emerald-400">
-                          {todo.estimatedMinutes}m
-                        </span>
-                      </div>
-                    </div>
+                    <span
+                      className={`truncate text-sm font-medium ${
+                        todo.completed
+                          ? 'line-through text-slate-400'
+                          : 'text-slate-100'
+                      }`}
+                    >
+                      {todo.title}
+                    </span>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            {/* TV Bottom Status Ticker */}
-            <div className="flex items-center justify-between border-t border-slate-800 pt-2.5 text-xs">
-              <div className="flex items-center gap-2 text-amber-300 font-bold">
-                <Sparkles className="h-4 w-4" />
-                <span>
-                  CURRENTLY DOING IN OFFICE:{' '}
-                  {activeActivity
-                    ? `${activeActivity.title} (${activeActivity.timeSlot})`
-                    : 'Select an activity on the Whiteboard to begin!'}
-                </span>
-              </div>
-              <div className="font-mono font-bold text-emerald-400">
-                FOCUS TIMER: {String(timerMins).padStart(2, '0')}:
-                {String(timerSecs).padStart(2, '0')}
+                ))}
               </div>
             </div>
-          </div>
-        </Html>
+          </Html>
+        )}
       </group>
 
       {/* =====================================================================
-          STATION 2: GIANT DAILY ACTIVITY & KANBAN BOARD (NORTH WALL: X=5.5, Z=-13.72)
-          Displays All Daily Activities (Planned / Active / Done) + Sticky Notes!
+          STATION 2: DAILY ACTIVITY BOARD (NORTH WALL: X=5.5, Z=-13.72)
          ===================================================================== */}
       <group
         position={[5.5, 2.35, -13.72]}
@@ -767,113 +636,91 @@ function WalkableOfficeBuilding3D({
           onSelectStation('activity-board');
         }}
       >
-        {/* Brushed Aluminum Magnetic Whiteboard Frame */}
         <mesh position={[0, 0.1, -0.04]} castShadow receiveShadow>
           <boxGeometry args={[8.4, 3.6, 0.1]} />
           <meshStandardMaterial color="#334155" metalness={0.7} roughness={0.3} />
         </mesh>
 
-        {/* Marker Tray at bottom of board */}
         <mesh position={[0, -1.65, 0.12]} castShadow>
           <boxGeometry args={[6.5, 0.08, 0.22]} />
           <meshStandardMaterial color="#94a3b8" metalness={0.8} />
         </mesh>
 
-        {/* Floor Interaction Ring in front of Activity Board */}
-        <mesh
-          position={[0, -2.16, 2.6]}
-          rotation={[-Math.PI / 2, 0, 0]}
-        >
-          <ringGeometry args={[0.9, 1.2, 32]} />
-          <meshBasicMaterial
-            color="#38bdf8"
-            transparent
-            opacity={nearbyStation === 'activity-board' ? 0.95 : 0.4}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
-
-        {/* LIVE 3D HTML ACTIVITY WHITEBOARD — Interactive in 3D! */}
-        <Html
-          transform
-          distanceFactor={3.0}
-          position={[0, 0.1, 0.06]}
-          zIndexRange={[20, 0]}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="flex h-[450px] w-[960px] select-none flex-col justify-between overflow-hidden rounded-2xl border-4 border-sky-500/60 bg-slate-950 p-5 text-white shadow-[0_0_50px_rgba(56,189,248,0.35)]"
+        {showInteriorScreens && (
+          <Html
+            transform
+            distanceFactor={3.0}
+            position={[0, 0.1, 0.06]}
+            zIndexRange={[10, 0]}
           >
-            {/* Whiteboard Header */}
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-500 text-slate-950 shadow">
-                  <LayoutGrid className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-black tracking-wide text-white">
-                    DAILY ACTIVITIES &amp; WORKFLOW BOARD
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="flex h-[430px] w-[920px] select-none flex-col justify-between overflow-hidden rounded-xl border-2 border-sky-500/40 bg-slate-950 p-5 text-white"
+            >
+              {/* Clean Board Header */}
+              <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <LayoutGrid className="h-5 w-5 text-sky-400" />
+                  <h3 className="text-base font-bold tracking-tight text-white">
+                    Daily Activity Board
                   </h3>
-                  <p className="text-xs text-slate-400">
-                    Click &quot;Do Now&quot; or &quot;Complete&quot; on any activity card right on the wall, or open full Board Manager
-                  </p>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => onSelectStation('activity-board')}
+                  className="rounded-lg bg-sky-500 px-3 py-1.5 text-xs font-bold text-slate-950 hover:bg-sky-400"
+                >
+                  Open Board
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => onSelectStation('activity-board')}
-                className="rounded-xl bg-sky-500 px-4 py-2 text-xs font-black text-slate-950 shadow hover:bg-sky-400"
-              >
-                + Open Full Board &amp; Stickies
-              </button>
-            </div>
 
-            {/* 3 Kanban Columns + Sticky Notes Strip */}
-            <div className="my-2.5 grid flex-1 grid-cols-4 gap-3 overflow-hidden">
-              {(
-                [
-                  { stage: 'planned', title: 'PLANNED TODAY', col: 'text-sky-400' },
-                  {
-                    stage: 'active',
-                    title: 'DOING NOW (IN OFFICE)',
-                    col: 'text-amber-400',
-                  },
-                  { stage: 'completed', title: 'DONE TODAY', col: 'text-emerald-400' },
-                ] as const
-              ).map((c) => {
-                const list = officeState.activities.filter(
-                  (a) => a.stage === c.stage
-                );
-                return (
-                  <div
-                    key={c.stage}
-                    className="flex flex-col rounded-xl border border-slate-800 bg-slate-900/75 p-2.5 overflow-y-auto"
-                  >
-                    <div className="mb-2 flex items-center justify-between border-b border-slate-800 pb-1.5">
-                      <span className={`text-[11px] font-black ${c.col}`}>
-                        {c.title}
-                      </span>
-                      <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] font-bold">
-                        {list.length}
-                      </span>
-                    </div>
-                    <div className="space-y-2">
-                      {list.map((act) => (
-                        <div
-                          key={act.id}
-                          className="rounded-lg border border-slate-800 bg-slate-950 p-2.5"
-                          style={{
-                            borderLeftWidth: '4px',
-                            borderLeftColor: act.colorTag,
-                          }}
-                        >
-                          <div className="text-[10px] font-bold text-sky-300">
-                            {act.timeSlot}
-                          </div>
-                          <div className="mt-0.5 text-xs font-extrabold text-white">
-                            {act.title}
-                          </div>
-                          <div className="mt-2 flex items-center gap-1.5">
+              {/* 3 Clean Columns */}
+              <div className="mt-3 grid flex-1 grid-cols-3 gap-3 overflow-hidden">
+                {(
+                  [
+                    { stage: 'planned', title: 'Planned', col: 'text-sky-400' },
+                    {
+                      stage: 'active',
+                      title: 'Doing Now',
+                      col: 'text-amber-400',
+                    },
+                    { stage: 'completed', title: 'Done', col: 'text-emerald-400' },
+                  ] as const
+                ).map((c) => {
+                  const list = officeState.activities.filter(
+                    (a) => a.stage === c.stage
+                  );
+                  return (
+                    <div
+                      key={c.stage}
+                      className="flex flex-col rounded-xl border border-slate-800/80 bg-slate-900/60 p-3 overflow-y-auto"
+                    >
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className={`text-xs font-bold ${c.col}`}>
+                          {c.title}
+                        </span>
+                        <span className="text-xs text-slate-400">
+                          {list.length}
+                        </span>
+                      </div>
+                      <div className="space-y-2">
+                        {list.map((act) => (
+                          <div
+                            key={act.id}
+                            className="flex items-center justify-between gap-2 rounded-lg border border-slate-800 bg-slate-950 p-2.5"
+                            style={{
+                              borderLeftWidth: '3px',
+                              borderLeftColor: act.colorTag,
+                            }}
+                          >
+                            <div className="overflow-hidden">
+                              <div className="text-[10px] text-slate-400">
+                                {act.timeSlot}
+                              </div>
+                              <div className="truncate text-xs font-semibold text-white">
+                                {act.title}
+                              </div>
+                            </div>
                             {act.stage === 'planned' && (
                               <button
                                 type="button"
@@ -881,9 +728,10 @@ function WalkableOfficeBuilding3D({
                                   soundEngine.playChime('start');
                                   onUpdateActivityStage(act.id, 'active');
                                 }}
-                                className="flex w-full items-center justify-center gap-1 rounded bg-amber-400 py-1 text-[10px] font-black text-slate-950 hover:bg-amber-300"
+                                className="shrink-0 rounded bg-amber-400 px-2 py-1 text-[10px] font-bold text-slate-950 hover:bg-amber-300"
                               >
-                                <Play className="h-3 w-3 fill-current" /> Do Now
+                                <Play className="inline h-2.5 w-2.5 fill-current" />{' '}
+                                Start
                               </button>
                             )}
                             {act.stage === 'active' && (
@@ -893,43 +741,25 @@ function WalkableOfficeBuilding3D({
                                   soundEngine.playChime('complete');
                                   onUpdateActivityStage(act.id, 'completed');
                                 }}
-                                className="flex w-full items-center justify-center gap-1 rounded bg-emerald-400 py-1 text-[10px] font-black text-slate-950 hover:bg-emerald-300"
+                                className="shrink-0 rounded bg-emerald-400 px-2 py-1 text-[10px] font-bold text-slate-950 hover:bg-emerald-300"
                               >
-                                <CheckCircle2 className="h-3 w-3" /> Complete
+                                Done
                               </button>
                             )}
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-
-              {/* 4th Column: Pinned Sticky Notes */}
-              <div className="flex flex-col rounded-xl border border-slate-800 bg-slate-900/75 p-2.5 overflow-y-auto">
-                <div className="mb-2 border-b border-slate-800 pb-1.5 text-[11px] font-black text-amber-300">
-                  PINNED STICKY NOTES
-                </div>
-                <div className="space-y-2">
-                  {officeState.stickyNotes.map((n) => (
-                    <div
-                      key={n.id}
-                      className="rounded-lg p-2.5 text-xs font-bold text-slate-950 shadow"
-                      style={{ backgroundColor: n.color }}
-                    >
-                      {n.text}
-                    </div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             </div>
-          </div>
-        </Html>
+          </Html>
+        )}
       </group>
 
       {/* =====================================================================
-          STATION 3: EXECUTIVE COMMAND DESK & DUAL MONITORS (X=5.5, Z=-4.2)
+          STATION 3: EXECUTIVE COMMAND DESK & DUAL MONITORS (Clean 3D Mesh, No Floating Banner)
          ===================================================================== */}
       <group
         position={[5.5, 0.17, -4.2]}
@@ -938,18 +768,15 @@ function WalkableOfficeBuilding3D({
           onSelectStation('workstation-desk');
         }}
       >
-        {/* Luxury Executive Area Rug under Desk */}
         <mesh position={[0, 0.01, -0.8]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[7.5, 6.2]} />
           <meshStandardMaterial color="#1e293b" roughness={0.9} />
         </mesh>
 
-        {/* Walnut L-Shaped Executive Desktop */}
         <mesh position={[0, 0.78, 0]} castShadow receiveShadow>
           <boxGeometry args={[3.4, 0.09, 1.35]} />
           <meshStandardMaterial color="#451a03" roughness={0.35} />
         </mesh>
-        {/* Desk Modesty Front Panel & Pedestal Legs */}
         <mesh position={[0, 0.4, -0.58]} castShadow receiveShadow>
           <boxGeometry args={[3.2, 0.75, 0.08]} />
           <meshStandardMaterial color="#1c1917" roughness={0.5} />
@@ -963,7 +790,6 @@ function WalkableOfficeBuilding3D({
           <meshStandardMaterial color="#1c1917" roughness={0.5} />
         </mesh>
 
-        {/* Dual Curved Ultrawide Monitors on Desk */}
         <mesh position={[-0.65, 1.15, -0.25]} rotation={[0, 0.18, 0]} castShadow>
           <boxGeometry args={[1.15, 0.52, 0.05]} />
           <meshStandardMaterial
@@ -981,7 +807,6 @@ function WalkableOfficeBuilding3D({
           />
         </mesh>
 
-        {/* Ergonomic High-Back Executive Leather Chair (Behind Desk at Z = +0.95) */}
         <group position={[0, 0, 0.95]}>
           <mesh position={[0, 0.52, 0]} castShadow>
             <boxGeometry args={[0.68, 0.1, 0.65]} />
@@ -996,37 +821,10 @@ function WalkableOfficeBuilding3D({
             <meshStandardMaterial color="#64748b" metalness={0.8} />
           </mesh>
         </group>
-
-        {/* Floating Label over Executive Command Desk */}
-        <Html position={[0, 2.05, 0]} center distanceFactor={18} zIndexRange={[15, 0]}>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onSelectStation('workstation-desk');
-            }}
-            className={`flex items-center gap-2 rounded-xl border px-3 py-1.5 text-left shadow-xl transition ${
-              nearbyStation === 'workstation-desk'
-                ? 'scale-110 border-amber-400 bg-slate-950'
-                : 'border-amber-500/50 bg-slate-950/90 hover:scale-105'
-            }`}
-          >
-            <Monitor className="h-4 w-4 text-amber-400" />
-            <div>
-              <div className="whitespace-nowrap text-xs font-extrabold text-white">
-                Executive Command Desk
-              </div>
-              <div className="whitespace-nowrap text-[10px] text-amber-300">
-                Pomodoro ({String(timerMins).padStart(2, '0')}:
-                {String(timerSecs).padStart(2, '0')}) • Scratchpad • Audio
-              </div>
-            </div>
-          </button>
-        </Html>
       </group>
 
       {/* =====================================================================
-          STATION 4: WEST FOCUS LOUNGE, L-SOFA & ESPRESSO BAR (X=-7.2, Z=-8.5)
+          STATION 4: WEST FOCUS LOUNGE (Clean 3D Mesh, No Floating Banner)
          ===================================================================== */}
       <group
         position={[-7.2, 0.17, -8.5]}
@@ -1035,13 +833,11 @@ function WalkableOfficeBuilding3D({
           onSelectStation('focus-lounge');
         }}
       >
-        {/* Plush Lounge Carpet */}
         <mesh position={[0, 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[7.2, 7.2]} />
           <meshStandardMaterial color="#312e81" roughness={0.92} />
         </mesh>
 
-        {/* Modern L-Shaped Lounge Sofa */}
         <mesh position={[0, 0.35, -1.8]} castShadow receiveShadow>
           <boxGeometry args={[4.4, 0.55, 1.1]} />
           <meshStandardMaterial color="#334155" roughness={0.75} />
@@ -1055,7 +851,6 @@ function WalkableOfficeBuilding3D({
           <meshStandardMaterial color="#334155" roughness={0.75} />
         </mesh>
 
-        {/* Glass & Gold Coffee Table */}
         <mesh position={[0.4, 0.32, -0.2]} castShadow receiveShadow>
           <cylinderGeometry args={[1.1, 1.1, 0.08, 24]} />
           <meshStandardMaterial
@@ -1066,41 +861,18 @@ function WalkableOfficeBuilding3D({
           />
         </mesh>
 
-        {/* Espresso Bar Counter against West/North Corner */}
         <mesh position={[-3.6, 0.55, 2.2]} castShadow receiveShadow>
           <boxGeometry args={[1.1, 1.1, 3.2]} />
           <meshStandardMaterial color="#292524" roughness={0.5} />
         </mesh>
-        {/* Chrome Espresso Machine */}
         <mesh position={[-3.6, 1.3, 2.2]} castShadow>
           <boxGeometry args={[0.55, 0.45, 0.65]} />
           <meshStandardMaterial color="#e2e8f0" metalness={0.85} roughness={0.2} />
         </mesh>
-
-        <Html position={[0, 1.75, -0.5]} center distanceFactor={20} zIndexRange={[15, 0]}>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onSelectStation('focus-lounge');
-            }}
-            className="flex items-center gap-2 rounded-xl border border-purple-400/50 bg-slate-950/90 px-3 py-1.5 text-left shadow-xl transition hover:scale-105"
-          >
-            <Coffee className="h-4 w-4 text-purple-400" />
-            <div>
-              <div className="whitespace-nowrap text-xs font-extrabold text-white">
-                Focus Lounge &amp; Espresso Bar
-              </div>
-              <div className="whitespace-nowrap text-[10px] text-purple-300">
-                Take a 10m Recharge Break &amp; Ambient Audio
-              </div>
-            </div>
-          </button>
-        </Html>
       </group>
 
       {/* =====================================================================
-          STATION 5: GRAND RECEPTION LOBBY DESK (X=0, Z=3.8)
+          STATION 5: GRAND RECEPTION LOBBY DESK (Clean 3D Mesh, No Floating Banner)
          ===================================================================== */}
       <group
         position={[0, 0.17, 3.8]}
@@ -1121,24 +893,13 @@ function WalkableOfficeBuilding3D({
             emissiveIntensity={1.1}
           />
         </mesh>
-
-        <Html position={[0, 1.8, 0]} center distanceFactor={20} zIndexRange={[15, 0]}>
-          <div className="pointer-events-none select-none rounded-xl border border-teal-500/40 bg-slate-950/90 px-3 py-1 text-center shadow-lg">
-            <div className="text-[10px] font-extrabold uppercase tracking-wider text-teal-400">
-              Reception Concierge
-            </div>
-            <div className="text-xs font-bold text-white">
-              Walk Straight Ahead into Your Executive Suite ↑
-            </div>
-          </div>
-        </Html>
       </group>
     </group>
   );
 }
 
 /**
- * 3. Walkable Human Avatar & Smooth 3-Mode Camera Controller (Third-Person, First-Person, Aerial Drone)
+ * 3. Walkable Human Avatar & Smooth 3-Mode Camera Controller
  */
 function PlayerAvatarController({
   playerPos,
@@ -1270,7 +1031,6 @@ function PlayerAvatarController({
       }
     }
 
-    // Clamp to campus bounds
     posRef.current.x = Math.max(-45, Math.min(45, posRef.current.x));
     posRef.current.z = Math.max(-13.3, Math.min(35, posRef.current.z));
 
@@ -1278,7 +1038,6 @@ function PlayerAvatarController({
     const pz = posRef.current.z;
     const ry = posRef.current.rotY;
 
-    // Slight elevation step when inside the building (Z in [-14..9], X in [-12..12])
     const isInsideBuilding =
       px >= -12.1 && px <= 12.1 && pz >= -14.1 && pz <= 9.2;
     const avatarY = isInsideBuilding ? 0.17 : 0;
@@ -1315,7 +1074,6 @@ function PlayerAvatarController({
       );
       camera.lookAt(px, avatarY + 1.0, pz);
     } else {
-      // Smooth third-person follow camera (stays below the 4.6m ceiling when indoors)
       const camDist = isInsideBuilding ? 4.2 : 6.8;
       const camHeight = isInsideBuilding ? 2.65 : 3.4;
       const camX = px + Math.sin(ry) * camDist;
@@ -1330,24 +1088,22 @@ function PlayerAvatarController({
       lastSyncRef.current = t;
       setPlayerPos({ ...posRef.current });
 
-      // Determine current room / zone
-      let zone = 'Estate Avenue (Outside Gate)';
+      let zone = 'Outside Gate';
       if (pz > 9.2 && pz <= 18.5 && Math.abs(px) <= 14) {
-        zone = 'Executive Forecourt Courtyard';
+        zone = 'Courtyard';
       } else if (isInsideBuilding) {
         if (pz >= 0) {
-          zone = 'Grand Reception Lobby';
+          zone = 'Reception Lobby';
         } else if (px < -1.5) {
-          zone = 'West Focus & Espresso Lounge';
+          zone = 'Focus Lounge';
         } else {
-          zone = 'Main Executive Office Suite (Board & TV)';
+          zone = 'Main Office';
         }
       }
       onCurrentZoneChange(zone);
 
-      // Check nearest interactive station
       let closestStation: InteractiveStationId | null = null;
-      let minDist = 4.8;
+      let minDist = 4.2;
       for (const st of OFFICE_STATIONS) {
         const d = Math.hypot(st.position.x - px, st.position.z - pz);
         if (d < minDist) {
@@ -1361,13 +1117,11 @@ function PlayerAvatarController({
 
   return (
     <group ref={groupRef} visible={cameraMode !== 'first-person'}>
-      {/* Avatar Ground Shadow Ring */}
       <mesh position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[0.48, 24]} />
         <meshBasicMaterial color="#000000" transparent opacity={0.35} />
       </mesh>
 
-      {/* Left & Right Legs */}
       <group ref={leftLegRef} position={[-0.15, 0.88, 0]}>
         <mesh position={[0, -0.38, 0]} castShadow>
           <boxGeometry args={[0.19, 0.75, 0.2]} />
@@ -1390,13 +1144,11 @@ function PlayerAvatarController({
         </mesh>
       </group>
 
-      {/* Executive Blazer Torso */}
       <mesh position={[0, 1.28, 0]} castShadow>
         <boxGeometry args={[0.5, 0.72, 0.28]} />
         <meshStandardMaterial color="#0284c7" roughness={0.65} />
       </mesh>
 
-      {/* Arms */}
       <group ref={leftArmRef} position={[-0.34, 1.54, 0]}>
         <mesh position={[0, -0.28, 0]} castShadow>
           <boxGeometry args={[0.14, 0.55, 0.15]} />
@@ -1419,7 +1171,6 @@ function PlayerAvatarController({
         </mesh>
       </group>
 
-      {/* Head & Hair */}
       <mesh position={[0, 1.88, 0]} castShadow>
         <boxGeometry args={[0.29, 0.32, 0.29]} />
         <meshStandardMaterial color="#5c3824" roughness={0.55} />
@@ -1483,7 +1234,6 @@ export default function OfficeWorld3D({
     };
   }, [timeOfDay]);
 
-  // Automatically cutaway roof in aerial drone mode or when user toggles roof cutaway
   const effectiveRoofCutaway = roofCutaway || cameraMode === 'aerial';
 
   return (
@@ -1498,19 +1248,18 @@ export default function OfficeWorld3D({
         }
       }}
     >
-      {/* Floating Drone Altitude Controls when in Aerial Mode */}
       {cameraMode === 'aerial' && (
-        <div className="pointer-events-auto absolute right-4 top-20 z-20 flex items-center gap-2 rounded-2xl border border-emerald-500/40 bg-slate-950/90 px-3.5 py-2 shadow-2xl backdrop-blur-md">
+        <div className="pointer-events-auto absolute right-4 top-16 z-20 flex items-center gap-2 rounded-full border border-slate-800 bg-slate-950/85 px-3 py-1.5 backdrop-blur-md">
           <button
             type="button"
             onClick={() =>
               setDroneAltitude((p) => Math.max(10, Math.round(p * 0.82)))
             }
-            className="flex items-center gap-1 rounded-lg bg-emerald-500 px-2.5 py-1 text-xs font-extrabold text-slate-950"
+            className="text-xs font-bold text-emerald-400 hover:text-emerald-300"
           >
-            <ZoomIn className="h-3.5 w-3.5" /> Zoom In
+            <ZoomIn className="h-4 w-4" />
           </button>
-          <span className="text-xs font-bold text-emerald-300">
+          <span className="text-xs font-semibold text-slate-300">
             {droneAltitude}m
           </span>
           <button
@@ -1518,9 +1267,9 @@ export default function OfficeWorld3D({
             onClick={() =>
               setDroneAltitude((p) => Math.min(90, Math.round(p * 1.2)))
             }
-            className="flex items-center gap-1 rounded-lg bg-slate-800 px-2.5 py-1 text-xs font-bold text-white"
+            className="text-xs font-bold text-slate-300 hover:text-white"
           >
-            <ZoomOut className="h-3.5 w-3.5" /> Zoom Out
+            <ZoomOut className="h-4 w-4" />
           </button>
         </div>
       )}
@@ -1563,7 +1312,6 @@ export default function OfficeWorld3D({
           shadow-bias={-0.0005}
         />
 
-        {/* Click-to-Walk Target Indicator Ring */}
         {walkTarget && (
           <mesh
             position={[walkTarget.x, 0.22, walkTarget.z]}
@@ -1574,16 +1322,11 @@ export default function OfficeWorld3D({
           </mesh>
         )}
 
-        {/* Exterior Kayfarm-style Compound Gate, Road, Gutters & Courtyard */}
         <ExteriorCampusAndGate
           timeOfDay={timeOfDay}
           onFloorClick={(pt) => setWalkTarget(pt.clone())}
-          onWalkIntoOffice={() =>
-            setWalkTarget(new THREE.Vector3(5.5, 0.17, -5.5))
-          }
         />
 
-        {/* Walk-In Multi-Room 3D Executive Office Building */}
         <WalkableOfficeBuilding3D
           officeState={officeState}
           playerPos={playerPos}
@@ -1596,7 +1339,6 @@ export default function OfficeWorld3D({
           onUpdateActivityStage={onUpdateActivityStage}
         />
 
-        {/* Walkable Avatar & Camera Rig */}
         <PlayerAvatarController
           playerPos={playerPos}
           setPlayerPos={setPlayerPos}
